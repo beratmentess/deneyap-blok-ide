@@ -1,0 +1,136 @@
+import { BoardInfo } from '../types';
+
+export const SUPPORTED_BOARDS: BoardInfo[] = [
+  {
+    id: 'deneyapkart',
+    name: 'Deneyap Kart',
+    fqbn: 'deneyap:esp32:deneyapkart',
+    chip: 'ESP32-WROVER',
+    digitalPins: ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'D10', 'D11', 'D12', 'D13', 'D14', 'D15'],
+    analogPins: ['A0', 'A1', 'A2', 'A3', 'A4', 'A5'],
+    pwmPins: ['D0', 'D1', 'D4', 'D5', 'D6', 'D7', 'D9', 'D10', 'D11', 'D12', 'D13', 'D14', 'D15'],
+    i2cPins: { sda: 'D10', scl: 'D11' }, // SDA=4, SCL=15
+    spiPins: { sck: 'D5', mosi: 'D7', miso: 'D6', ss: 'D4' },
+    defaultUploadBaud: 921600,
+    hasRgb: true,
+    hasBluetooth: true,
+    hasWifi: true,
+    hasImu: true,
+    description: 'ESP32 tabanlı, dahili IMU (LSM6DSM), dahili mikrofon ve RGB LED barındıran ana kart.'
+  },
+  {
+    id: 'deneyapkart1A',
+    name: 'Deneyap Kart 1A',
+    fqbn: 'deneyap:esp32:deneyapkart1A',
+    chip: 'ESP32-WROOM-32',
+    digitalPins: ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'D10', 'D11', 'D12', 'D13', 'D14', 'D15'],
+    analogPins: ['A0', 'A1', 'A2', 'A3', 'A4', 'A5'],
+    pwmPins: ['D0', 'D1', 'D4', 'D5', 'D6', 'D7', 'D9', 'D10', 'D11', 'D12', 'D13', 'D14', 'D15'],
+    i2cPins: { sda: 'D10', scl: 'D11' },
+    spiPins: { sck: 'D5', mosi: 'D7', miso: 'D6', ss: 'D4' },
+    defaultUploadBaud: 921600,
+    hasRgb: true,
+    hasBluetooth: true,
+    hasWifi: true,
+    hasImu: false,
+    description: 'Kompakt form faktörü, ESP32-WROOM-32 işlemci ve dahili RGB LED.'
+  },
+  {
+    id: 'deneyapkart1Av2',
+    name: 'Deneyap Kart 1A v2',
+    fqbn: 'deneyap:esp32:deneyapkart1Av2',
+    chip: 'ESP32-S3',
+    vid: '303a',
+    pid: '8147',
+    digitalPins: ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'D10', 'D11', 'D12', 'D13', 'D14', 'D15'],
+    analogPins: ['A0', 'A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8'],
+    pwmPins: ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'D10', 'D11', 'D12', 'D13', 'D14', 'D15'],
+    i2cPins: { sda: 'SDA', scl: 'SCL' },
+    spiPins: { sck: 'SCK', mosi: 'MOSI', miso: 'MISO', ss: 'SS' },
+    defaultUploadBaud: 921600,
+    hasRgb: true,
+    hasBluetooth: true,
+    hasWifi: true,
+    hasImu: false,
+    description: 'ESP32-S3 mimarisi, yerel USB desteği ve adreslenebilir RGB LED.'
+  },
+  {
+    id: 'deneyapmini',
+    name: 'Deneyap Mini',
+    fqbn: 'deneyap:esp32:deneyapmini',
+    chip: 'ESP32-S2',
+    vid: '303a',
+    pid: '8141',
+    digitalPins: ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'D10', 'D11', 'D12', 'D13', 'D14', 'D15', 'D16'],
+    analogPins: ['A0', 'A1', 'A2', 'A3', 'A4', 'A5', 'A6'],
+    pwmPins: ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'D10', 'D11'],
+    i2cPins: { sda: 'D8', scl: 'D7' },
+    spiPins: { sck: 'D6', mosi: 'D4', miso: 'D5', ss: 'D10' },
+    defaultUploadBaud: 921600,
+    hasRgb: true,
+    hasBluetooth: false,
+    hasWifi: true,
+    hasImu: false,
+    description: 'ESP32-S2 mikrodenetleyici, yerel USB ve küçük boyut.'
+  },
+  {
+    id: 'deneyapminiv2',
+    name: 'Deneyap Mini v2',
+    fqbn: 'deneyap:esp32:deneyapminiv2',
+    chip: 'ESP32-S2',
+    vid: '303a',
+    pid: '8144',
+    digitalPins: ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'D10', 'D11', 'D12', 'D13', 'D14', 'D15', 'D16'],
+    analogPins: ['A0', 'A1', 'A2', 'A3', 'A4', 'A5', 'A6'],
+    pwmPins: ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'D10', 'D11'],
+    i2cPins: { sda: 'D8', scl: 'D7' },
+    spiPins: { sck: 'D6', mosi: 'D4', miso: 'D5', ss: 'D10' },
+    defaultUploadBaud: 921600,
+    hasRgb: true,
+    hasBluetooth: false,
+    hasWifi: true,
+    hasImu: false,
+    description: 'Güncellenmiş ESP32-S2 revizyonu ve USB arayüzü.'
+  },
+  {
+    id: 'deneyapkartg',
+    name: 'Deneyap Kart G',
+    fqbn: 'deneyap:esp32:deneyapkartg',
+    chip: 'ESP32-C3',
+    vid: '303a',
+    pid: '814a',
+    digitalPins: ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6'],
+    analogPins: ['A0', 'A1', 'A2', 'A3', 'A4', 'A5'],
+    pwmPins: ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6'],
+    i2cPins: { sda: 'D4', scl: 'D6' },
+    spiPins: { sck: 'A3', mosi: 'A4', miso: 'A5', ss: 'D5' },
+    defaultUploadBaud: 921600,
+    hasRgb: true,
+    hasBluetooth: false, // BLE only, no classic bluetooth
+    hasWifi: true,
+    hasImu: false,
+    description: 'RISC-V 32-bit tek çekirdekli ESP32-C3 mikrodenetleyici ve dahili RGB LED.'
+  },
+  {
+    id: 'deneyapkartv2',
+    name: 'Deneyap Kart v2',
+    fqbn: 'deneyap:esp32:deneyapkartv2',
+    chip: 'ESP32-S3',
+    digitalPins: ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'D10', 'D11', 'D12', 'D13', 'D14', 'D15'],
+    analogPins: ['A0', 'A1', 'A2', 'A3', 'A4', 'A5'],
+    pwmPins: ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'D10', 'D11', 'D12', 'D13', 'D14', 'D15'],
+    i2cPins: { sda: 'SDA', scl: 'SCL' },
+    spiPins: { sck: 'SCK', mosi: 'MOSI', miso: 'MISO', ss: 'SS' },
+    defaultUploadBaud: 921600,
+    hasRgb: true,
+    hasBluetooth: true,
+    hasWifi: true,
+    hasImu: true,
+    description: 'İkinci nesil amiral gemisi Deneyap Kart; ESP32-S3, dahili IMU ve zengin sensörler.'
+  }
+];
+
+export function getBoardById(id: string): BoardInfo {
+  const found = SUPPORTED_BOARDS.find((b) => b.id === id);
+  return found || SUPPORTED_BOARDS[0];
+}

@@ -1,0 +1,96 @@
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #151520;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2f2f45;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #474766;
+}
+
+/* Blockly custom styles */
+.blocklyToolboxDiv {
+  background-color: #161622 !important;
+  border-right: 1px solid #2d2d42 !important;
+  color: #fff !important;
+}
+
+.blocklyTreeLabel {
+  font-family: inherit !important;
+  font-size: 13px !important;
+  color: #d1d8e0 !important;
+}
+
+.blocklyTreeRow {
+  height: 34px !important;
+  line-height: 34px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  border-radius: 6px !important;
+  margin: 2px 6px !important;
+  transition: background-color 0.15s !important;
+}
+
+.blocklyTreeRow:hover {
+  background-color: #252538 !important;
+}
+
+.blocklyTreeSelected {
+  background-color: #3d3d5c !important;
+}
+
+.blocklyFlyoutBackground {
+  fill: #1a1a28 !important;
+  fill-opacity: 0.95 !important;
+}
+
+/* Workspace background */
+.blocklyMainBackground {
+  fill: #1a1a2e !important;
+}
+
+.blocklySvg {
+  background-color: #1a1a2e !important;
+}
+
+/* Trashcan styling */
+.blocklyTrash {
+  opacity: 0.6;
+}
+
+.blocklyTrash:hover {
+  opacity: 1;
+}
+
+/* Scrollbar styling for Blockly */
+.blocklyScrollbarHorizontal,
+.blocklyScrollbarVertical {
+  fill: #2f2f45 !important;
+}
+
+/* Selection highlight */
+::selection {
+  background: rgba(84, 160, 255, 0.3);
+}

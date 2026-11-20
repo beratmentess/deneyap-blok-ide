@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+dist-electron/
+release/
+
+# Large Toolchain (Downloaded via npm run setup-toolchain)
+toolchain/*
+!toolchain/.gitkeep
+
+# Logs and OS files
+*.log
+.DS_Store
+Thumbs.db
