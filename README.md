@@ -39,9 +39,9 @@ Bu projeyi kullanım amacınıza göre iki farklı yöntemle bilgisayarınızda 
 
 1. **İndirin:**
    - [Releases (Sürümler)](https://github.com/beratmentess/deneyap-blok-ide/releases) sayfasına gidin.
-   - En güncel sürümün altından hazır paketi indirin.
+   - En güncel sürümün altından **`Deneyap-Blok-IDE-v1.0.0-Windows-x64-Full-Offline.7z`** paketini indirin.
 2. **Arşivden Çıkartın:**
-   - İndirdiğiniz zip arşivine sağ tıklayıp **"Tümünü Ayıkla"** deyin.
+   - İndirdiğiniz arşive sağ tıklayıp klasöre çıkartın (Windows 11 doğrudan ayıklar, Windows 10 için 7-Zip/WinRAR kullanabilirsiniz).
 3. **Çift Tıklayıp Başlatın:**
    - Klasör içindeki **`Deneyap Blok IDE.exe`** dosyasına çift tıklayın.
 4. **Hemen Kodlayın:**
