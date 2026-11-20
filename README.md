@@ -10,6 +10,7 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/beratmentess/deneyap-blok-ide/releases"><img src="https://img.shields.io/github/v/release/beratmentess/deneyap-blok-ide?color=orange&label=S%C3%BCr%C3%BCm" alt="Release" /></a>
   <img src="https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows&logoColor=white" alt="Platform Windows" />
   <img src="https://img.shields.io/badge/Offline-%25100%20Internetsiz-success" alt="Offline" />
   <img src="https://img.shields.io/badge/Blockly-Google%20Blockly%20(Tr)-blue" alt="Blockly" />
@@ -27,42 +28,75 @@ Atölyelerde, TEKNOFEST hazırlıklarında veya internet erişiminin kısıtlı 
 
 ---
 
-## ⚡ Kullanım Yöntemleri
+## 🚀 Nasıl Kullanılır? (Durum A ve Durum B Seçenekleri)
 
-### 👥 1. Son Kullanıcılar İçin (Öğrenci, Öğretmen, Atölye)
-> Hiçbir kodlama veya terminal bilgisi gerektirmez.
+Bu projeyi kullanım amacınıza göre iki farklı yöntemle bilgisayarınızda çalıştırabilirsiniz:
 
-1. Sağ taraftaki **[Releases (Sürümler)](https://github.com/beratmentess/deneyap-blok-ide/releases)** sekmesine gidin.
-2. En güncel `Deneyap-Blok-IDE-win-x64.zip` arşivini indirin.
-3. Arşivi bir klasöre çıkartın.
-4. `Deneyap Blok IDE.exe` dosyasına çift tıklayın!
-5. **İnternet bağlantınız kapalı olsa dahi** blokları dizip **Derle** ve **Yükle** butonlarını kullanabilirsiniz.
+### 🟢 DURUM B: Doğrudan Çalıştırma (Son Kullanıcılar / Öğrenciler / Öğretmenler)
+
+> **Hedef Kitle:** Bilgisayarında Node.js, Python veya terminal araçları bulunmayan; tek tıkla kurulumsuz `.exe` üzerinden Deneyap Kart'ını bloklarla kodlamak isteyen herkes.  
+> **İnternet Gereksinimi:** **%0 (Tamamen Çevrimdışı)**
+
+1. **İndirin:**
+   - [Releases (Sürümler)](https://github.com/beratmentess/deneyap-blok-ide/releases) sayfasına gidin.
+   - En güncel sürümün altından hazır paketi indirin.
+2. **Arşivden Çıkartın:**
+   - İndirdiğiniz zip arşivine sağ tıklayıp **"Tümünü Ayıkla"** deyin.
+3. **Çift Tıklayıp Başlatın:**
+   - Klasör içindeki **`Deneyap Blok IDE.exe`** dosyasına çift tıklayın.
+4. **Hemen Kodlayın:**
+   - Deneyap Kart'ınızı USB kablosuyla bilgisayara takın.
+   - Üst menüden kart modelinizi ve algılanan COM portunu seçin.
+   - Bloklarınızı birleştirin, **"Derle"** ve **"Yükle"** butonlarına basın. Kodunuz tamamen yerel derleyiciyle derlenip doğrudan USB üzerinden Deneyap Kart'ınıza yüklenecektir!
 
 ---
 
-### 💻 2. Geliştiriciler İçin (Kaynak Koddan Çalıştırma)
-Projeyi geliştirmek, yeni bloklar eklemek veya kaynak koddan derlemek için:
+### 🟡 DURUM A: Kaynak Koddan Çalıştırma (Geliştiriciler & Açık Kaynak Katkıcıları)
 
-```bash
-# 1. Depoyu klonlayın
-git clone https://github.com/beratmentess/deneyap-blok-ide.git
-cd deneyap-blok-ide
+> **Hedef Kitle:** Projenin kaynak kodlarını incelemek, yeni Deneyap blokları veya sensör kütüphaneleri eklemek, arayüzü özelleştirmek veya projeyi sıfırdan derlemek isteyen yazılımcılar.  
+> **Ön Koşul:** Bilgisayarınızda **Node.js** (v18+) ve **Git** kurulu olmalıdır.
 
-# 2. Node.js bağımlılıklarını kurun
-npm install
+1. **Depoyu Klonlayın:**
+   ```bash
+   git clone https://github.com/beratmentess/deneyap-blok-ide.git
+   cd deneyap-blok-ide
+   ```
 
-# 3. Yerel derleyiciyi ve Deneyap Core paketlerini otomatik kurun
-npm run setup-toolchain
+2. **Node.js Bağımlılıklarını Kurun:**
+   ```bash
+   npm install
+   ```
 
-# 4. Geliştirme modunda başlatın
-npm run dev
-```
+3. **Yerel Derleyici Paketlerini İndirin (Tek Seferlik Kurulum):**
+   ```bash
+   npm run setup-toolchain
+   ```
+   *Bu betik `arduino-cli.exe` ve Deneyap ESP32 Core paketlerini `toolchain/` klasörüne otomatik olarak kurar.*
 
-#### Paketleme (.exe Üretme):
-```bash
-npm run package
-```
-Üretilen çalıştırılabilir masaüstü uygulaması `release/win-unpacked/` klasöründe oluşacaktır.
+4. **Geliştirici Arayüzünü Başlatın (Hot-Reload):**
+   ```bash
+   npm run dev
+   ```
+
+5. **Kendi Bağımsız `.exe` Paketinizi Üretin:**
+   ```bash
+   npm run package
+   ```
+   *Üretilen bağımsız Windows uygulaması `release/win-unpacked/Deneyap Blok IDE.exe` konumunda hazır olur.*
+
+---
+
+### ⚖️ Durum A ve Durum B Karşılaştırma Tablosu
+
+| Kriter | 🟢 Durum B (Hazır .exe - Taşınabilir) | 🟡 Durum A (Kaynak Kod Geliştirme) |
+|---|---|---|
+| **Kullanıcı Profili** | Öğrenci, Öğretmen, Atölye, Yarışma Ekipleri | Yazılımcı, Açık Kaynak Geliştirici |
+| **Gereken Ön Kurulum** | **Hiçbir şey gerekmez** (Zero Dependencies) | Node.js (v18+) & Git |
+| **Terminal / Komut Satırı** | ❌ Gerekmez |  Gerekir (`npm`) |
+| **Başlatma Süresi** | ⚡ 10 saniye (ZIP'ten çıkar & tıkla) | ⏳ 3-5 dakika (bağımlılık + derleme) |
+| **Kod Geliştirme İmkanı** | ❌ Yalnızca Blok IDE Kullanımı |  Tüm React, TS ve Blockly kodlarına müdahale |
+| **İnternetsiz Çalışma** |  %100 Çevrimdışı |  Kurulumdan sonra %100 Çevrimdışı |
+| **Dosya Konumu** | [Releases Sayfası](https://github.com/beratmentess/deneyap-blok-ide/releases) | Ana Depo (`git clone`) |
 
 ---
 
@@ -72,7 +106,7 @@ npm run package
 |---|---|
 | **%100 Çevrimdışı Çalışma** | CDN kullanılmaz. Blockly, `arduino-cli`, Xtensa GCC (`esp-x32`), RISC-V GCC (`esp-rv32`) ve `esptool` uygulamanın içine yerleşiktir. |
 | **Tam Türkçe Arayüz** | Tüm kategoriler, bloklar, açıklamalar, terminal logları ve ipuçları Türkçedir. |
-| **Canlı C++ Kod Önizleme** | Blokları sürüklediğiniz anda sağ panelde standart Arduino/ESP32 C++ kodu (`setup()`, `loop()`) renklendirilmiş olarak akar. |
+| **Canlı C++ Kod Önizleme** | Blokları sürüklediğiniz anda sağ panelde standart Arduino/ESP32 C++ kodu (`#include <Arduino.h>`, `setup()`, `loop()`) renklendirilmiş olarak akar. |
 | **Otomatik COM Port Algılama** | Kart takıldığında USB Vendor ID / Product ID'ye göre kartı otomatik tanır. |
 | **Doğrudan USB Yükleme** | "Yükle" dendiğinde Blok &rarr; C++ &rarr; Yerel Derleme &rarr; USB Flaşlama zinciri arka planda çalışır. |
 | **Dahili Seri Monitör** | Harici bir uygulama açmadan IDE içinde baud hızı ayarı, veri gönderme/okuma ve otomatik kaydırma. |
