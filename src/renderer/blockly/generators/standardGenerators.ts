@@ -57,6 +57,15 @@ export function registerStandardGenerators() {
     return [val, cppGenerator.ORDER_ATOMIC];
   };
 
+  (cppGenerator as any).forBlock['logic_null'] = function () {
+    return ['NULL', cppGenerator.ORDER_ATOMIC];
+  };
+
+  (cppGenerator as any).forBlock['controls_flow_statements'] = function (block: any) {
+    const flow = block.getFieldValue('FLOW');
+    return flow === 'BREAK' ? 'break;\n' : 'continue;\n';
+  };
+
   // Loops
   (cppGenerator as any).forBlock['controls_repeat_ext'] = function (block: any) {
     const repeats = cppGenerator.valueToCode(block, 'TIMES', cppGenerator.ORDER_ASSIGNMENT) || '0';
@@ -132,6 +141,81 @@ export function registerStandardGenerators() {
     return [`random(${from}, ${to} + 1)`, cppGenerator.ORDER_ATOMIC];
   };
 
+  (cppGenerator as any).forBlock['math_single'] = function (block: any) {
+    const op = block.getFieldValue('OP');
+    const arg = cppGenerator.valueToCode(block, 'NUM', cppGenerator.ORDER_NONE) || '0';
+    switch (op) {
+      case 'ROOT': return [`sqrt(${arg})`, cppGenerator.ORDER_ATOMIC];
+      case 'ABS': return [`abs(${arg})`, cppGenerator.ORDER_ATOMIC];
+      case 'NEG': return [`(-(${arg}))`, cppGenerator.ORDER_UNARY_PREFIX];
+      case 'LN': return [`log(${arg})`, cppGenerator.ORDER_ATOMIC];
+      case 'LOG10': return [`log10(${arg})`, cppGenerator.ORDER_ATOMIC];
+      case 'EXP': return [`exp(${arg})`, cppGenerator.ORDER_ATOMIC];
+      case 'POW10': return [`pow(10, ${arg})`, cppGenerator.ORDER_ATOMIC];
+      default: return [`(${arg})`, cppGenerator.ORDER_ATOMIC];
+    }
+  };
+
+  (cppGenerator as any).forBlock['math_round'] = function (block: any) {
+    const op = block.getFieldValue('OP');
+    const arg = cppGenerator.valueToCode(block, 'NUM', cppGenerator.ORDER_NONE) || '0';
+    switch (op) {
+      case 'ROUND': return [`round(${arg})`, cppGenerator.ORDER_ATOMIC];
+      case 'ROUNDUP': return [`ceil(${arg})`, cppGenerator.ORDER_ATOMIC];
+      case 'ROUNDDOWN': return [`floor(${arg})`, cppGenerator.ORDER_ATOMIC];
+      default: return [`round(${arg})`, cppGenerator.ORDER_ATOMIC];
+    }
+  };
+
+  (cppGenerator as any).forBlock['math_trig'] = function (block: any) {
+    const op = block.getFieldValue('OP');
+    const arg = cppGenerator.valueToCode(block, 'NUM', cppGenerator.ORDER_NONE) || '0';
+    switch (op) {
+      case 'SIN': return [`sin(${arg} * PI / 180.0)`, cppGenerator.ORDER_ATOMIC];
+      case 'COS': return [`cos(${arg} * PI / 180.0)`, cppGenerator.ORDER_ATOMIC];
+      case 'TAN': return [`tan(${arg} * PI / 180.0)`, cppGenerator.ORDER_ATOMIC];
+      case 'ASIN': return [`(asin(${arg}) * 180.0 / PI)`, cppGenerator.ORDER_ATOMIC];
+      case 'ACOS': return [`(acos(${arg}) * 180.0 / PI)`, cppGenerator.ORDER_ATOMIC];
+      case 'ATAN': return [`(atan(${arg}) * 180.0 / PI)`, cppGenerator.ORDER_ATOMIC];
+      default: return [`sin(${arg})`, cppGenerator.ORDER_ATOMIC];
+    }
+  };
+
+  (cppGenerator as any).forBlock['math_constant'] = function (block: any) {
+    const c = block.getFieldValue('CONSTANT');
+    switch (c) {
+      case 'PI': return ['PI', cppGenerator.ORDER_ATOMIC];
+      case 'E': return ['2.718281828459', cppGenerator.ORDER_ATOMIC];
+      case 'GOLDEN_RATIO': return ['1.61803398875', cppGenerator.ORDER_ATOMIC];
+      case 'SQRT2': return ['1.41421356237', cppGenerator.ORDER_ATOMIC];
+      case 'SQRT1_2': return ['0.70710678118', cppGenerator.ORDER_ATOMIC];
+      case 'INFINITY': return ['INFINITY', cppGenerator.ORDER_ATOMIC];
+      default: return ['0', cppGenerator.ORDER_ATOMIC];
+    }
+  };
+
+  (cppGenerator as any).forBlock['math_number_property'] = function (block: any) {
+    const num = cppGenerator.valueToCode(block, 'NUMBER_TO_CHECK', cppGenerator.ORDER_NONE) || '0';
+    const prop = block.getFieldValue('PROPERTY');
+    switch (prop) {
+      case 'EVEN': return [`(${num} % 2 == 0)`, cppGenerator.ORDER_EQUALITY];
+      case 'ODD': return [`(${num} % 2 != 0)`, cppGenerator.ORDER_EQUALITY];
+      case 'POSITIVE': return [`(${num} > 0)`, cppGenerator.ORDER_RELATIONAL];
+      case 'NEGATIVE': return [`(${num} < 0)`, cppGenerator.ORDER_RELATIONAL];
+      case 'WHOLE': return [`(floor(${num}) == ${num})`, cppGenerator.ORDER_EQUALITY];
+      case 'DIVISIBLE_BY':
+        const div = cppGenerator.valueToCode(block, 'DIVISOR', cppGenerator.ORDER_NONE) || '1';
+        return [`(${num} % ${div} == 0)`, cppGenerator.ORDER_EQUALITY];
+      default: return ['true', cppGenerator.ORDER_ATOMIC];
+    }
+  };
+
+  (cppGenerator as any).forBlock['math_modulo'] = function (block: any) {
+    const a = cppGenerator.valueToCode(block, 'DIVIDEND', cppGenerator.ORDER_NONE) || '0';
+    const b = cppGenerator.valueToCode(block, 'DIVISOR', cppGenerator.ORDER_NONE) || '1';
+    return [`(${a} % ${b})`, cppGenerator.ORDER_MULTIPLICATIVE];
+  };
+
   // Text
   (cppGenerator as any).forBlock['text'] = function (block: any) {
     const text = block.getFieldValue('TEXT') || '';
@@ -148,6 +232,16 @@ export function registerStandardGenerators() {
       elements.push(`String(${el})`);
     }
     return [elements.join(' + '), cppGenerator.ORDER_ADDITIVE];
+  };
+
+  (cppGenerator as any).forBlock['text_length'] = function (block: any) {
+    const text = cppGenerator.valueToCode(block, 'VALUE', cppGenerator.ORDER_NONE) || '""';
+    return [`String(${text}).length()`, cppGenerator.ORDER_ATOMIC];
+  };
+
+  (cppGenerator as any).forBlock['text_isEmpty'] = function (block: any) {
+    const text = cppGenerator.valueToCode(block, 'VALUE', cppGenerator.ORDER_NONE) || '""';
+    return [`(String(${text}).length() == 0)`, cppGenerator.ORDER_EQUALITY];
   };
 
   // Variables
@@ -193,5 +287,18 @@ export function registerStandardGenerators() {
   (cppGenerator as any).forBlock['procedures_callreturn'] = function (block: any) {
     const funcName = block.getFieldValue('NAME');
     return [`${funcName}()`, cppGenerator.ORDER_ATOMIC];
+  };
+
+  (cppGenerator as any).forBlock['procedures_ifreturn'] = function (block: any) {
+    const condition = cppGenerator.valueToCode(block, 'CONDITION', cppGenerator.ORDER_NONE) || 'false';
+    let code = `if (${condition}) {\n`;
+    if (block.hasReturnValue_) {
+      const value = cppGenerator.valueToCode(block, 'VALUE', cppGenerator.ORDER_NONE) || '0';
+      code += `  return ${value};\n`;
+    } else {
+      code += '  return;\n';
+    }
+    code += '}\n';
+    return code;
   };
 }

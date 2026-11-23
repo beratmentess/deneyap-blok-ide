@@ -58,7 +58,7 @@ export const BlocklyComponent = React.forwardRef<BlocklyComponentHandle, Blockly
         grid: {
           spacing: 20,
           length: 3,
-          colour: '#2f3542',
+          colour: '#cbd5e1',
           snap: true
         },
         zoom: {
@@ -87,46 +87,53 @@ export const BlocklyComponent = React.forwardRef<BlocklyComponentHandle, Blockly
           console.warn('Initial state could not be loaded:', e);
         }
       } else {
-        // Create initial default starter blocks: blink LED
+        // Create initial default starter blocks: Deneyap Kurulum & Döngü with blink LED
         try {
           const starterJson = {
             blocks: {
               languageVersion: 0,
               blocks: [
                 {
-                  type: 'deneyap_digital_write',
+                  type: 'deneyap_kurulum_dongu',
                   x: 60,
                   y: 50,
-                  fields: {
-                    PIN: 'D10',
-                    STATE: 'HIGH'
-                  },
-                  next: {
-                    block: {
-                      type: 'deneyap_delay',
-                      inputs: {
-                        DELAY_MS: {
-                          shadow: {
-                            type: 'math_number',
-                            fields: { NUM: 1000 }
-                          }
-                        }
-                      },
-                      next: {
-                        block: {
-                          type: 'deneyap_digital_write',
-                          fields: {
-                            PIN: 'D10',
-                            STATE: 'LOW'
-                          },
-                          next: {
-                            block: {
-                              type: 'deneyap_delay',
-                              inputs: {
-                                DELAY_MS: {
-                                  shadow: {
-                                    type: 'math_number',
-                                    fields: { NUM: 1000 }
+                  inputs: {
+                    LOOP: {
+                      block: {
+                        type: 'deneyap_digital_write',
+                        fields: {
+                          PIN: 'D10',
+                          STATE: 'HIGH'
+                        },
+                        next: {
+                          block: {
+                            type: 'deneyap_delay',
+                            inputs: {
+                              DELAY_MS: {
+                                shadow: {
+                                  type: 'math_number',
+                                  fields: { NUM: 1000 }
+                                }
+                              }
+                            },
+                            next: {
+                              block: {
+                                type: 'deneyap_digital_write',
+                                fields: {
+                                  PIN: 'D10',
+                                  STATE: 'LOW'
+                                },
+                                next: {
+                                  block: {
+                                    type: 'deneyap_delay',
+                                    inputs: {
+                                      DELAY_MS: {
+                                        shadow: {
+                                          type: 'math_number',
+                                          fields: { NUM: 1000 }
+                                        }
+                                      }
+                                    }
                                   }
                                 }
                               }

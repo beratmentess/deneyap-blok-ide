@@ -97,14 +97,36 @@ export class CppGenerator extends Blockly.Generator {
 
     if (!workspace) return '';
 
-    // Generate code for all top blocks
     const topBlocks = workspace.getTopBlocks(true);
     let loopCode = '';
+    let explicitSetupCode = '';
 
     for (const block of topBlocks) {
       if (!block.isEnabled()) continue;
 
-      // Top-level setup/loop block or standard blocks
+      // Check if this is the main Deneyap Kurulum/Döngü block
+      if (block.type === 'deneyap_kurulum_dongu') {
+        const setupStatements = this.statementToCode(block, 'SETUP');
+        if (setupStatements.trim().length > 0) {
+          explicitSetupCode += setupStatements;
+        }
+        const loopStatements = this.statementToCode(block, 'LOOP');
+        if (loopStatements.trim().length > 0) {
+          loopCode += loopStatements;
+        }
+        continue;
+      }
+
+      // Check if this is the Tanımlama (global definitions) block
+      if (block.type === 'deneyap_tanimlama') {
+        const declStatements = this.statementToCode(block, 'DECL');
+        if (declStatements.trim().length > 0) {
+          this.addDeclaration('tanimlama_block', declStatements);
+        }
+        continue;
+      }
+
+      // Any other top-level blocks
       const line = this.blockToCode(block);
       if (typeof line === 'string') {
         loopCode += line;
@@ -148,6 +170,13 @@ export class CppGenerator extends Blockly.Generator {
       for (const [, setupLine] of this.setups) {
         fullSketch += `  ${setupLine}\n`;
       }
+    }
+    if (explicitSetupCode.trim().length > 0) {
+      const indentedSetup = explicitSetupCode
+        .split('\n')
+        .map((l) => (l.trim().length > 0 ? `  ${l}` : ''))
+        .join('\n');
+      fullSketch += `${indentedSetup}\n`;
     }
     fullSketch += '}\n\n';
 

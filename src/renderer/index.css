@@ -30,54 +30,71 @@
   background: #474766;
 }
 
-/* Blockly custom styles */
+/* Deneyap Blok custom theme styles */
 .blocklyToolboxDiv {
-  background-color: #161622 !important;
-  border-right: 1px solid #2d2d42 !important;
-  color: #fff !important;
+  background-color: #f8fafc !important;
+  border-right: 1px solid #e2e8f0 !important;
+  color: #334155 !important;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.04);
 }
 
 .blocklyTreeLabel {
-  font-family: inherit !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
   font-size: 13px !important;
-  color: #d1d8e0 !important;
+  font-weight: 600 !important;
+  color: #334155 !important;
 }
 
 .blocklyTreeRow {
   height: 34px !important;
   line-height: 34px !important;
-  padding-left: 10px !important;
+  padding-left: 12px !important;
   padding-right: 10px !important;
   border-radius: 6px !important;
-  margin: 2px 6px !important;
-  transition: background-color 0.15s !important;
+  margin: 3px 6px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease-in-out !important;
+  border: 1px solid transparent !important;
 }
 
 .blocklyTreeRow:hover {
-  background-color: #252538 !important;
+  background-color: #e2e8f0 !important;
+  color: #0f172a !important;
 }
 
 .blocklyTreeSelected {
-  background-color: #3d3d5c !important;
+  background-color: #e2e8f0 !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  font-weight: bold !important;
+  box-shadow: inset 3px 0 0 #0088cc !important;
+}
+
+.blocklyTreeSelected .blocklyTreeLabel {
+  color: #0f172a !important;
+  font-weight: 700 !important;
 }
 
 .blocklyFlyoutBackground {
-  fill: #1a1a28 !important;
-  fill-opacity: 0.95 !important;
+  fill: #f1f5f9 !important;
+  fill-opacity: 0.98 !important;
+  stroke: #cbd5e1 !important;
+  stroke-width: 1px !important;
 }
 
-/* Workspace background */
+/* Workspace background - Deneyap Light Canvas */
 .blocklyMainBackground {
-  fill: #1a1a2e !important;
+  fill: #ffffff !important;
 }
 
 .blocklySvg {
-  background-color: #1a1a2e !important;
+  background-color: #ffffff !important;
 }
 
 /* Trashcan styling */
 .blocklyTrash {
-  opacity: 0.6;
+  opacity: 0.7;
+  transition: opacity 0.2s;
 }
 
 .blocklyTrash:hover {
@@ -87,10 +104,14 @@
 /* Scrollbar styling for Blockly */
 .blocklyScrollbarHorizontal,
 .blocklyScrollbarVertical {
-  fill: #2f2f45 !important;
+  fill: #cbd5e1 !important;
+}
+
+.blocklyScrollbarHandle {
+  fill: #94a3b8 !important;
 }
 
 /* Selection highlight */
 ::selection {
-  background: rgba(84, 160, 255, 0.3);
+  background: rgba(0, 136, 204, 0.25);
 }
