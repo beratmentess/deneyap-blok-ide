@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Header } from './components/Header';
 import { BlocklyComponent, BlocklyComponentHandle } from './blockly/BlocklyComponent';
 import { CodePreview } from './components/CodePreview';
+import { CodeEditorView } from './components/CodeEditorView';
 import { ConsoleTerminal } from './components/ConsoleTerminal';
 import { SerialMonitorModal } from './components/SerialMonitorModal';
 import { SerialPortInfo, ProjectData, ToolchainStatus } from '../core/types';
@@ -12,6 +13,10 @@ export const App: React.FC = () => {
   const [ports, setPorts] = useState<SerialPortInfo[]>([]);
   const [selectedPort, setSelectedPort] = useState<string>('');
   const [cppCode, setCppCode] = useState<string>('');
+  const [viewMode, setViewMode] = useState<'blocks' | 'code'>('blocks');
+  const [manualCode, setManualCode] = useState<string>(
+    `// ==================================================\n// Deneyap Kart C++ / Arduino Kodu\n// ==================================================\n\nvoid setup() {\n  // Kurulum kodları burada tek sefer çalışır\n}\n\nvoid loop() {\n  // Ana döngü kodları burada sürekli çalışır\n}\n`
+  );
   const [logs, setLogs] = useState<string[]>([]);
   const [isCompiling, setIsCompiling] = useState<boolean>(false);
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -21,6 +26,9 @@ export const App: React.FC = () => {
   const [projectName, setProjectName] = useState<string>('DeneyapProjem');
 
   const blocklyRef = useRef<BlocklyComponentHandle>(null);
+
+  // Active code is manualCode when in 'code' view, or cppCode when in 'blocks' view
+  const activeCode = viewMode === 'code' ? manualCode : cppCode;
 
   // Load available serial ports
   const refreshPorts = async () => {
@@ -67,17 +75,31 @@ export const App: React.FC = () => {
     setLogs((prev) => [...prev, msg]);
   };
 
+  const handleToggleViewMode = () => {
+    if (viewMode === 'blocks') {
+      if (cppCode.trim().length > 0) {
+        setManualCode(cppCode);
+      }
+      setViewMode('code');
+      addLog('[BİLGİ] C++ Metin Kod Yazma Moduna geçildi. Kodunuzu doğrudan yazabilir ve karta yükleyebilirsiniz.\n');
+    } else {
+      setViewMode('blocks');
+      addLog('[BİLGİ] Blok Tabanlı Editör Moduna geçildi.\n');
+    }
+  };
+
   const handleCompile = async () => {
     if (isCompiling || isUploading) return;
     setIsCompiling(true);
     setStatusText('Derleniyor...');
     setStatusType('working');
     addLog(`\n================== DERLEME BAŞLADI ==================\n`);
+    addLog(`[BİLGİ] Mod: ${viewMode === 'code' ? 'Metin C++ Editörü' : 'Blok Editörü'}\n`);
 
     try {
       const result = await (window as any).electronAPI?.compile({
         boardId: selectedBoardId,
-        code: cppCode
+        code: activeCode
       });
 
       if (result?.success) {
@@ -107,12 +129,13 @@ export const App: React.FC = () => {
     setStatusText('Yükleniyor...');
     setStatusType('working');
     addLog(`\n================== YÜKLEME BAŞLADI ==================\n`);
+    addLog(`[BİLGİ] Mod: ${viewMode === 'code' ? 'Metin C++ Editörü' : 'Blok Editörü'}\n`);
 
     try {
       const result = await (window as any).electronAPI?.upload({
         boardId: selectedBoardId,
         port: selectedPort,
-        code: cppCode
+        code: activeCode
       });
 
       if (result?.success) {
@@ -134,6 +157,7 @@ export const App: React.FC = () => {
   const handleNewProject = () => {
     if (confirm('Mevcut proje temizlenecek. Devam etmek istiyor musunuz?')) {
       blocklyRef.current?.clearWorkspace();
+      setManualCode(`// Deneyap Kart C++ / Arduino Kodu\nvoid setup() {\n  // Kurulum kodları\n}\n\nvoid loop() {\n  // Ana döngü kodları\n}\n`);
       setProjectName('YeniProje');
       setLogs([]);
       setStatusText('Hazır');
@@ -148,7 +172,7 @@ export const App: React.FC = () => {
       name: projectName,
       boardId: selectedBoardId,
       workspaceState: state,
-      cppCode,
+      cppCode: activeCode,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
@@ -178,6 +202,9 @@ export const App: React.FC = () => {
       if (data.boardId) setSelectedBoardId(data.boardId);
       if (data.workspaceState) {
         blocklyRef.current?.loadWorkspaceJson(data.workspaceState);
+      }
+      if (data.cppCode) {
+        setManualCode(data.cppCode);
       }
       addLog(`[BİLGİ] "${data.name}" projesi başarıyla açıldı.\n`);
     }
@@ -219,9 +246,11 @@ export const App: React.FC = () => {
         statusType={statusType}
         projectName={projectName}
         onProjectNameChange={setProjectName}
+        viewMode={viewMode}
+        onToggleViewMode={handleToggleViewMode}
       />
 
-      {/* Main Center Area: Blockly (Left/Center) + C++ Code Preview (Right) */}
+      {/* Main Center Area: Blok Editörü VEYA Tam Metin Kod Editörü */}
       <div
         style={{
           flex: 1,
@@ -231,14 +260,32 @@ export const App: React.FC = () => {
           position: 'relative'
         }}
       >
-        <div style={{ flex: 1, height: '100%', position: 'relative' }}>
-          <BlocklyComponent
-            ref={blocklyRef}
-            onCodeChange={(code) => setCppCode(code)}
-          />
-        </div>
-
-        <CodePreview code={cppCode} />
+        {viewMode === 'blocks' ? (
+          <>
+            <div style={{ flex: 1, height: '100%', position: 'relative' }}>
+              <BlocklyComponent
+                ref={blocklyRef}
+                onCodeChange={(code) => setCppCode(code)}
+              />
+            </div>
+            <CodePreview code={cppCode} />
+          </>
+        ) : (
+          <div style={{ flex: 1, height: '100%', position: 'relative' }}>
+            <CodeEditorView
+              code={manualCode}
+              onChange={(newCode) => setManualCode(newCode)}
+              onSyncFromBlocks={() => {
+                if (cppCode.trim().length > 0) {
+                  setManualCode(cppCode);
+                  addLog('[BİLGİ] Bloklardaki C++ kodu metin editörüne aktarıldı.\n');
+                } else {
+                  alert('Henüz bloklardan üretilmiş C++ kodu bulunmuyor.');
+                }
+              }}
+            />
+          </div>
+        )}
       </div>
 
       {/* Bottom Console Terminal */}

@@ -12,7 +12,9 @@ import {
   RefreshCw,
   CheckCircle2,
   AlertCircle,
-  Loader2
+  Loader2,
+  Code2,
+  Blocks
 } from 'lucide-react';
 import { SUPPORTED_BOARDS } from '../../core/boards/boardDefinitions';
 import { SerialPortInfo } from '../../core/types';
@@ -38,6 +40,8 @@ interface HeaderProps {
   statusType: 'idle' | 'working' | 'success' | 'error';
   projectName: string;
   onProjectNameChange: (name: string) => void;
+  viewMode: 'blocks' | 'code';
+  onToggleViewMode: () => void;
 }
 
 const HoverButton: React.FC<{
@@ -90,7 +94,9 @@ export const Header: React.FC<HeaderProps> = ({
   statusText,
   statusType,
   projectName,
-  onProjectNameChange
+  onProjectNameChange,
+  viewMode,
+  onToggleViewMode
 }) => {
   return (
     <header
@@ -134,6 +140,42 @@ export const Header: React.FC<HeaderProps> = ({
             <div style={{ fontSize: '10px', color: '#6c6c8a' }}>Tamamen Çevrimdışı</div>
           </div>
         </div>
+
+        {/* Divider */}
+        <div style={{ width: '1px', height: '30px', backgroundColor: '#2d2d42' }} />
+
+        {/* Mode Switcher: Blok vs Kod */}
+        <button
+          onClick={onToggleViewMode}
+          title={viewMode === 'blocks' ? 'Normal Kod Yazma Moduna Geç (C++ Editörü)' : 'Blok Editörüne Dön'}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '5px 12px',
+            borderRadius: '6px',
+            fontSize: '12px',
+            fontWeight: 700,
+            cursor: 'pointer',
+            transition: 'all 0.2s ease-in-out',
+            backgroundColor: viewMode === 'code' ? '#dc2626' : '#27273f',
+            color: '#ffffff',
+            border: viewMode === 'code' ? '1px solid #ef4444' : '1px solid #3d3d5c',
+            boxShadow: viewMode === 'code' ? '0 0 12px rgba(220, 38, 38, 0.45)' : 'none'
+          }}
+        >
+          {viewMode === 'code' ? (
+            <>
+              <Blocks size={15} color="#ffffff" />
+              <span>🧩 Blok Modu</span>
+            </>
+          ) : (
+            <>
+              <Code2 size={15} color="#38bdf8" />
+              <span>&lt;/&gt; Kod Yaz</span>
+            </>
+          )}
+        </button>
 
         {/* Divider */}
         <div style={{ width: '1px', height: '30px', backgroundColor: '#2d2d42' }} />
